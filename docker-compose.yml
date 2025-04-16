@@ -1,0 +1,12 @@
+services:
+  nginx:
+    image: nginx:latest  # Use the official Nginx image
+    ports:
+      - "8443:443"  # Keep the same port mapping
+    volumes:
+      # Mount the custom Nginx configuration
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # Mount the server certificate and key from the 'certs' subdirectory
+      # to the location specified in nginx.conf (/etc/nginx/ssl/)
+      - ./certs/server.crt:/etc/nginx/ssl/server.crt:ro
+      - ./certs/server.key:/etc/nginx/ssl/server.key:ro
