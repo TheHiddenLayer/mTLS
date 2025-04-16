@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # --- Standard TLS Service --- 
   nginx-tls:
     image: nginx:latest  # Use the official Nginx image
     ports:
@@ -14,7 +11,6 @@ services:
       - ./certs/server.crt:/etc/nginx/ssl/server.crt:ro
       - ./certs/server.key:/etc/nginx/ssl/server.key:ro
 
-  # --- Mutual TLS (mTLS) Service --- 
   nginx-mtls:
     image: nginx:latest
     ports:
