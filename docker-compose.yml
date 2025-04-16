@@ -1,5 +1,8 @@
+version: '3.8'
+
 services:
-  nginx:
+  # --- Standard TLS Service --- 
+  nginx-tls:
     image: nginx:latest  # Use the official Nginx image
     ports:
       - "8443:443"  # Keep the same port mapping
@@ -10,3 +13,16 @@ services:
       # to the location specified in nginx.conf (/etc/nginx/ssl/)
       - ./certs/server.crt:/etc/nginx/ssl/server.crt:ro
       - ./certs/server.key:/etc/nginx/ssl/server.key:ro
+
+  # --- Mutual TLS (mTLS) Service --- 
+  nginx-mtls:
+    image: nginx:latest
+    ports:
+      - "8444:443" # Host port 8444
+    volumes:
+      # Mount the mTLS Nginx configuration
+      - ./nginx-mtls.conf:/etc/nginx/nginx.conf:ro
+      # Mount the server certificate, key, AND the CA cert for client verification
+      - ./certs/server.crt:/etc/nginx/ssl/server.crt:ro
+      - ./certs/server.key:/etc/nginx/ssl/server.key:ro
+      - ./certs/client-ca.crt:/etc/nginx/ssl/client-ca.crt:ro # Mount CA cert
